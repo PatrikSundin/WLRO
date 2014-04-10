@@ -258,3 +258,241 @@ void returntostart()
 		}
 	}
 }
+
+
+int map1[17][31]={{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,}, //1 är avsökt
+	 	  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
+						
+					
+
+void setmypos(mypos) //sätter nuvarande position till en tvåa
+{
+	map1[myposY][myposX]=2;
+}
+
+void setwall(int x,int y)
+{
+	map1[y][x]=1;
+}
+
+int findfirstzero()
+{
+	int i; //X
+	int j; //Y
+	int firstzero[2]={0,0};
+	
+	for(int j=0;j<=17;j++)
+	{
+		for(int i=0;i<=31;i++)
+		{
+			if(map1[j][i]==0)
+			{
+				firstzero[0]=i;
+				firstzero[1]=j;
+			}
+		}
+	}
+return firstzero;					
+}
+
+void prutt()
+{
+	int leftturn;
+	if(myposX>0)
+	{
+		leftturn=0;
+	}	
+	else
+	{
+		leftturn=1;
+	}
+	
+	while(1)
+	{
+		if(sensorfront>50)
+		{
+			PORTC = 0x01;
+			PORTB = 0x04;
+			OCR2A = speed;
+			OCR0A = speed;
+		}
+		else if(leftturn==1)
+		{
+			rotate90left2();
+			int distance=0;
+			while(distance<40)
+			{
+				PORTC = 0x01;
+				PORTB = 0x04;
+				OCR2A = speed;
+				OCR0A = speed;
+			}
+			rotate90left2();
+		}
+		else
+		{
+			rotate90right2();
+			int distance=0;
+			while(distance<40)
+			{
+				PORTC = 0x01;
+				PORTB = 0x04;
+				OCR2A = speed;
+				OCR0A = speed;
+			}
+			rotate90right2();
+		}
+	}		
+}
+
+void rotate90right2()
+{
+	int degrees=0;
+	
+	if(degrees<89)
+	{
+		PORTC = 0x00;
+		PORTB = 0x40;
+		OCR2A = 150;
+		OCR1A = 150;
+		degrees+=gyro
+	}
+	else if (degrees>91)
+	{
+		PORTC = 0x01;
+		PORTB = 0x00;
+		OCR2A = 100;
+		OCR1A = 100;
+		degrees-=gyro;
+	}
+	else
+	{
+		OCR2A = speed;
+		OCR1A = speed;
+	}
+}
+
+void rotate90left2()
+{
+	int degrees=0;
+	
+	if(degrees<89)
+	{
+		PORTC = 0x01;
+		PORTB = 0x00;
+		OCR2A = 150;
+		OCR1A = 150;
+		degrees+=gyro
+	}
+	else if (degrees>91)
+	{
+		PORTC = 0x00;
+		PORTB = 0x40;
+		OCR2A = 100;
+		OCR1A = 100;
+		degrees-=gyro
+	}
+	else
+	{
+		OCR2A = 0;
+		OCR1A = 0;
+	}
+}
+
+void driveto(int x, int y)
+{
+	if(myposX!=x)
+	{
+		if(x>myposX)
+		{
+			switch(mydirection)  //mydirection: 1=x+, 2=y+. 3=x-, 4=y-
+			{
+				case(1):
+				PORTC = 0x01;
+				PORTB = 0x04;
+				OCR2A = speed;
+				OCR0A = speed;
+				case(2):
+				rotate90right2();
+				case(3):
+				rotate90right2();
+				rotate90right2();
+				case(4):
+				rotate90left2();
+			}
+		}
+		else
+		{
+			switch(mydirection)
+			{
+				case(3):
+				PORTC = 0x01;
+				PORTB = 0x04;
+				OCR2A = speed;
+				OCR0A = speed;
+				case(4):
+				rotate90left2();
+				case(1):
+				rotate90right2();
+				rotate90right2();
+				case(2):
+				rotate90right2();
+			}
+		}
+		
+	}
+	else if (myposY!=y)
+	{
+		if(y>myposY)
+		{
+			switch(mydirection)
+			{
+				case(2):
+				PORTC = 0x01;
+				PORTB = 0x04;
+				OCR2A = speed;
+				OCR0A = speed;
+				case(3):
+				rotate90right2();
+				case(4):
+				rotate90right2();
+				rotate90right2();
+				case(1):
+				rotate90left2();
+			}
+		}
+		else
+		{
+			switch(mydirection)
+			{
+				case(4):
+				PORTC = 0x01;
+				PORTB = 0x04;
+				OCR2A = speed;
+				OCR0A = speed;
+				case(1):
+				rotate90left2();
+				case(2):
+				rotate90right2();
+				rotate90right2();
+				case(3):
+				rotate90right2();
+			}
+		}
+	}
+}
